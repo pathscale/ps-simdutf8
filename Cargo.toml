@@ -5,7 +5,7 @@
 #
 #     simdutf8 = { package = "ps-simdutf8", version = "0.1" }
 name = "ps-simdutf8"
-version = "0.1.5"
+version = "0.1.6"
 authors = ["Hans Kratz <hans@appfour.com>"]
 edition = "2018"
 description = "SIMD-accelerated UTF-8 validation, with runtime CPU detection that does not need std."
@@ -32,9 +32,18 @@ exclude = [
 name = "simdutf8"
 
 [features]
-default = ["std"]
+# Empty on purpose. Upstream defaults to `std` because its CPU detection went
+# through `std::is_x86_feature_detected!`, so turning `std` off there cost the
+# vector paths. Detection is `cpuid` through `cpufeatures` now and needs no
+# operating system, so the fastest implementation is chosen at run time either
+# way and there is nothing left for a default to protect.
+#
+# Leaving it empty is what lets a consumer take this dependency plainly,
+# without `default-features = false`, and still be `no_std`.
+default = []
 
-# enable CPU feature detection, on by default, turn off for no-std support
+# `impl std::error::Error for Utf8Error`, and nothing else. It does not affect
+# which implementation is selected or how fast validation is.
 std = []
 
 # expose SIMD implementations in basic::imp::* and compat::imp::*
