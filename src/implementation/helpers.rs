@@ -70,52 +70,55 @@ pub(crate) fn get_compat_error(input: &[u8], failing_block_pos: usize) -> Utf8Er
 #[allow(dead_code)] // only used if there is a SIMD implementation
 #[inline(always)] // needs to be forced because otherwise it is not inlined on armv7 neon
 pub(crate) unsafe fn memcpy_unaligned_nonoverlapping_inline_opt_lt_64(
-    mut src: *const u8,
-    mut dest: *mut u8,
+    src: *const u8,
+    dest: *mut u8,
     mut len: usize,
 ) {
     // This gets properly auto-vectorized on AVX 2 and SSE 4.2.
     // Needs to be forced because otherwise it is not inlined on armv7 neon.
     #[inline(always)]
     #[allow(clippy::inline_always)]
-    unsafe fn memcpy_u64(src: &mut *const u8, dest: &mut *mut u8) {
-        dest.cast::<u64>()
-            .write_unaligned(src.cast::<u64>().read_unaligned());
-        *src = src.add(8);
-        *dest = dest.add(8);
+    unsafe fn copy_u64_at(src: *const u8, dest: *mut u8, off: usize) {
+        dest.add(off)
+            .cast::<u64>()
+            .write_unaligned(src.add(off).cast::<u64>().read_unaligned());
     }
+    let mut off = 0usize;
     if len >= 32 {
-        memcpy_u64(&mut src, &mut dest);
-        memcpy_u64(&mut src, &mut dest);
-        memcpy_u64(&mut src, &mut dest);
-        memcpy_u64(&mut src, &mut dest);
+        copy_u64_at(src, dest, off);
+        copy_u64_at(src, dest, off + 8);
+        copy_u64_at(src, dest, off + 16);
+        copy_u64_at(src, dest, off + 24);
+        off += 32;
         len -= 32;
     }
     if len >= 16 {
-        memcpy_u64(&mut src, &mut dest);
-        memcpy_u64(&mut src, &mut dest);
+        copy_u64_at(src, dest, off);
+        copy_u64_at(src, dest, off + 8);
+        off += 16;
         len -= 16;
     }
     if len >= 8 {
-        memcpy_u64(&mut src, &mut dest);
+        copy_u64_at(src, dest, off);
+        off += 8;
         len -= 8;
     }
     if len >= 4 {
-        dest.cast::<u32>()
-            .write_unaligned(src.cast::<u32>().read_unaligned());
-        src = src.add(4);
-        dest = dest.add(4);
+        dest.add(off)
+            .cast::<u32>()
+            .write_unaligned(src.add(off).cast::<u32>().read_unaligned());
+        off += 4;
         len -= 4;
     }
     if len >= 2 {
-        dest.cast::<u16>()
-            .write_unaligned(src.cast::<u16>().read_unaligned());
-        src = src.add(2);
-        dest = dest.add(2);
+        dest.add(off)
+            .cast::<u16>()
+            .write_unaligned(src.add(off).cast::<u16>().read_unaligned());
+        off += 2;
         len -= 2;
     }
     if len == 1 {
-        *dest = *src;
+        *dest.add(off) = *src.add(off);
     }
 }
 
