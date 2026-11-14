@@ -14,7 +14,7 @@ pub(crate) mod helpers;
 pub(crate) mod x86;
 
 /// Fn needed instead of re-import, otherwise not inlined in non-std case
-#[flexpect::e(clippy::inline_always)]
+#[allow(clippy::inline_always)]
 #[inline(always)]
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 pub(super) unsafe fn validate_utf8_basic(input: &[u8]) -> Result<(), crate::basic::Utf8Error> {
@@ -22,7 +22,7 @@ pub(super) unsafe fn validate_utf8_basic(input: &[u8]) -> Result<(), crate::basi
 }
 
 /// Fn needed instead of re-import, otherwise not inlined in non-std case
-#[flexpect::e(clippy::inline_always)]
+#[allow(clippy::inline_always)]
 #[inline(always)]
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 pub(super) unsafe fn validate_utf8_compat(input: &[u8]) -> Result<(), crate::compat::Utf8Error> {
@@ -35,7 +35,7 @@ pub(super) unsafe fn validate_utf8_compat(input: &[u8]) -> Result<(), crate::com
 pub(crate) mod armv7;
 
 /// Fn needed instead of re-import, otherwise not inlined in non-std case
-#[flexpect::e(clippy::inline_always)]
+#[allow(clippy::inline_always)]
 #[inline(always)]
 #[cfg(all(target_arch = "arm", target_feature = "v7", target_endian = "little"))]
 pub(super) unsafe fn validate_utf8_basic(input: &[u8]) -> Result<(), crate::basic::Utf8Error> {
@@ -43,7 +43,7 @@ pub(super) unsafe fn validate_utf8_basic(input: &[u8]) -> Result<(), crate::basi
 }
 
 /// Fn needed instead of re-import, otherwise not inlined in non-std case
-#[flexpect::e(clippy::inline_always)]
+#[allow(clippy::inline_always)]
 #[inline(always)]
 #[cfg(all(target_arch = "arm", target_feature = "v7", target_endian = "little"))]
 pub(super) unsafe fn validate_utf8_compat(input: &[u8]) -> Result<(), crate::compat::Utf8Error> {

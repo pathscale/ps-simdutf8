@@ -69,9 +69,6 @@ rustdoc-args = ["--cfg", "docsrs"]
 default-target = "x86_64-unknown-linux-gnu"
 targets = ["aarch64-unknown-linux-gnu", "wasm32-unknown-unknown", "wasm32-wasip1"]
 
-[dependencies]
-flexpect = "0.1.1"
-
 [target.'cfg(any(target_arch = "x86", target_arch = "x86_64"))'.dependencies]
 cpufeatures = "0.3.1"
 

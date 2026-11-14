@@ -9,7 +9,7 @@ type Utf8ErrorCompat = crate::compat::Utf8Error;
 /// Caller has to ensure that `offset` is in bounds.
 ///
 #[inline]
-#[flexpect::e(clippy::cast_possible_truncation)]
+#[allow(clippy::cast_possible_truncation)]
 pub(crate) unsafe fn validate_utf8_at_offset(
     input: &[u8],
     offset: usize,
@@ -70,7 +70,7 @@ pub(crate) unsafe fn memcpy_unaligned_nonoverlapping_inline_opt_lt_64(
     // This gets properly auto-vectorized on AVX 2 and SSE 4.2.
     // Needs to be forced because otherwise it is not inlined on armv7 neon.
     #[inline(always)]
-    #[flexpect::e(clippy::inline_always)]
+    #[allow(clippy::inline_always)]
     unsafe fn memcpy_u64(src: &mut *const u8, dest: &mut *mut u8) {
         dest.cast::<u64>()
             .write_unaligned(src.cast::<u64>().read_unaligned());
@@ -128,7 +128,7 @@ pub(crate) struct TempSimdChunkA16(pub(crate) [u8; SIMD_CHUNK_SIZE]);
 
 #[allow(dead_code)] // only used if there is a SIMD implementation
 impl TempSimdChunkA16 {
-    #[flexpect::e(clippy::inline_always)]
+    #[allow(clippy::inline_always)]
     #[inline(always)] // needs to be forced because otherwise it is not inlined on armv7 neo
     pub(crate) const fn new() -> Self {
         Self([0; SIMD_CHUNK_SIZE])
@@ -145,7 +145,7 @@ pub(crate) struct TempSimdChunkA64(pub(crate) [u8; SIMD_CHUNK_SIZE]);
 
 #[allow(dead_code)] // only used if there is a SIMD implementation
 impl TempSimdChunkA32 {
-    #[flexpect::e(clippy::inline_always)]
+    #[allow(clippy::inline_always)]
     #[inline(always)] // needs to be forced because otherwise it is not inlined on armv7 neo
     pub(crate) const fn new() -> Self {
         Self([0; SIMD_CHUNK_SIZE])
@@ -154,7 +154,7 @@ impl TempSimdChunkA32 {
 
 #[allow(dead_code)] // only used if there is a SIMD implementation
 impl TempSimdChunkA64 {
-    #[flexpect::e(clippy::inline_always)]
+    #[allow(clippy::inline_always)]
     #[inline(always)] // needs to be forced because otherwise it is not inlined on armv7 neo
     pub(crate) const fn new() -> Self {
         Self([0; SIMD_CHUNK_SIZE])

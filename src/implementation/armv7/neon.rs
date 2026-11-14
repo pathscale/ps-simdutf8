@@ -34,7 +34,7 @@ type SimdU8Value = crate::implementation::helpers::SimdU8Value<uint8x16_t>;
 impl SimdU8Value {
     #[inline]
     #[target_feature(enable = "neon")]
-    #[flexpect::e(clippy::too_many_arguments)]
+    #[allow(clippy::too_many_arguments)]
     unsafe fn from_32_cut_off_leading(
         _v0: u8,
         _v1: u8,
@@ -77,7 +77,7 @@ impl SimdU8Value {
 
     #[inline]
     #[target_feature(enable = "neon")]
-    #[flexpect::e(clippy::too_many_arguments)]
+    #[allow(clippy::too_many_arguments)]
     unsafe fn repeat_16(
         v0: u8,
         v1: u8,
