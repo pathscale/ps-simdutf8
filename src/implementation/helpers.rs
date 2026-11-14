@@ -52,9 +52,16 @@ pub(crate) fn get_compat_error(input: &[u8], failing_block_pos: usize) -> Utf8Er
         // current block in that case.
         //
         // SAFETY: safe because failing_block_pos is in bounds.
-        (1..=3)
-            .find(|i| *(unsafe { input.get_unchecked(failing_block_pos - i) }) >> 6 != 0b10)
-            .map_or(failing_block_pos, |i| failing_block_pos - i)
+        let mut found = failing_block_pos;
+        let mut i = 1;
+        while i <= 3 {
+            if *(unsafe { input.get_unchecked(failing_block_pos - i) }) >> 6 != 0b10 {
+                found = failing_block_pos - i;
+                break;
+            }
+            i += 1;
+        }
+        found
     };
     // SAFETY: safe because the SIMD UTF-8 validation found an error and offset is in bounds.
     unsafe { unwrap_err_unchecked(validate_utf8_at_offset(input, offset)) }
