@@ -23,8 +23,8 @@ use crate::implementation::helpers::Utf8CheckAlgorithm;
 type SimdU8Value = crate::implementation::helpers::SimdU8Value<__m512i>;
 
 impl SimdU8Value {
-    #[flexpect::e(clippy::cast_possible_wrap)]
-    #[flexpect::e(clippy::too_many_arguments)]
+    #[allow(clippy::cast_possible_wrap)]
+    #[allow(clippy::too_many_arguments)]
     #[target_feature(enable = "avx512f,avx512bw,avx512vbmi")]
     #[inline]
     unsafe fn from_32_cut_off_leading(
@@ -73,8 +73,8 @@ impl SimdU8Value {
         ))
     }
 
-    #[flexpect::e(clippy::too_many_arguments)]
-    #[flexpect::e(clippy::cast_possible_wrap)]
+    #[allow(clippy::too_many_arguments)]
+    #[allow(clippy::cast_possible_wrap)]
     #[target_feature(enable = "avx512f,avx512bw,avx512vbmi")]
     #[inline]
     unsafe fn repeat_16(
@@ -107,7 +107,7 @@ impl SimdU8Value {
         ))
     }
 
-    #[flexpect::e(clippy::cast_ptr_alignment)]
+    #[allow(clippy::cast_ptr_alignment)]
     #[target_feature(enable = "avx512f,avx512bw,avx512vbmi")]
     #[inline]
     unsafe fn load_from(ptr: *const u8) -> Self {
@@ -130,7 +130,7 @@ impl SimdU8Value {
         Self::from(_mm512_permutexvar_epi8(self.0, tbl.0))
     }
 
-    #[flexpect::e(clippy::cast_possible_wrap)]
+    #[allow(clippy::cast_possible_wrap)]
     #[target_feature(enable = "avx512f,avx512bw,avx512vbmi")]
     #[inline]
     unsafe fn splat(val: u8) -> Self {

@@ -147,7 +147,7 @@ pub(crate) unsafe fn validate_utf8_basic(
         None
     }
 
-    #[flexpect::e(clippy::option_if_let_else)]
+    #[allow(clippy::option_if_let_else)]
     #[inline]
     fn get_fastest_available_implementation_basic() -> ValidateUtf8Fn {
         if let Some(fun) = get_avx512_implementation() {
@@ -349,7 +349,7 @@ pub(crate) unsafe fn validate_utf8_compat(
         None
     }
 
-    #[flexpect::e(clippy::option_if_let_else)]
+    #[allow(clippy::option_if_let_else)]
     #[inline]
     fn get_fastest_available_implementation_compat() -> ValidateUtf8CompatFn {
         if let Some(fun) = get_avx512_implementation() {
