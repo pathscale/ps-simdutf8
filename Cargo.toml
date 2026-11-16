@@ -5,7 +5,7 @@
 #
 #     simdutf8 = { package = "ps-simdutf8", version = "0.1" }
 name = "ps-simdutf8"
-version = "0.1.6"
+version = "0.1.7"
 authors = ["Hans Kratz <hans@appfour.com>"]
 edition = "2018"
 description = "SIMD-accelerated UTF-8 validation, with runtime CPU detection that does not need std."
